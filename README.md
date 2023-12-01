@@ -1,57 +1,59 @@
-# Project Name
-
-(short, 1-3 sentenced, description of the project)
-
-## Features
-
-This project framework provides the following features:
-
-* Feature 1
-* Feature 2
-* ...
+This is the Contoso Outdoors Company Website shown at Microsoft Ignite. It uses assets created by DALLE-3 and GPT-4. It is built with Next.js and Tailwind CSS.
 
 ## Getting Started
 
-### Prerequisites
+First, run the development server:
 
-(ideally very short, if any)
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-- OS
-- Library version
-- ...
+If you open [http://localhost:3000](http://localhost:3000) with your browser you should get the following result:
 
-### Installation
+![Contoso Outdoors Home Page](images/contosoweb.png "Contoso Outdoors Home Page")
 
-(ideally very short)
+Click on the chat button indicated above to start a chat session. There are three different chat types you can try:
 
-- npm install [package name]
-- mvn install
-- ...
+- Regular Chat using prompt flow (you can set that up using the  [Contoso Chat](https://github.com/Azure-Samples/contoso-chat/) repo). This is the default chat type.
+- Grounded chat using the "Add Your Data" feature inside of the Azure AI Studio playground (if you follow the instructions in the [Contoso Chat](https://github.com/Azure-Samples/contoso-chat/) repo, you will have this set up already). This can be enabled by adding `?type=grounded` to the URL. For example, `http://localhost:3000/?type=grounded`
+- Visual Chat - this is the same UI that was shown at the Microsoft Ignite conference. This can use either video capture or an image upload. This can be enabled by adding `?type=visual` to the URL. For example, `http://localhost:3000/?type=visual`. If you want to use video capture, you can use `?type=video` instead. For example, `http://localhost:3000/?type=video`. (Instructions for how to set this prompt flow up are forthcoming as soon as GPT-4 Turbo with Vision is released).
 
-### Quickstart
-(Add steps to get up and running quickly)
+## Setting up Endpoints
 
-1. git clone [repository clone url]
-2. cd [repository name]
-3. ...
+In order to use the Contoso Outdoors website, you will need to set up the following endpoints in a `.env` file in the root of the project:
 
+```bash
+CONTOSO_SEARCH_ENDPOINT=<YOUR_SEARCH_ENDPOINT>
+CONTOSO_SEARCH_KEY=<YOUR_SEARCH_KEY>
+CONTOSO_AISERVICES_ENDPOINT=<YOUR_AI_SERVICES_ENDPOINT>
+CONTOSO_AISERVICES_KEY=<YOUR_AI_SERVICES_KEY>
+PROMPTFLOW_ENDPOINT=<YOUR_PROMPTFLOW_ENDPOINT>
+PROMPTFLOW_KEY=<YOUR_PROMPTFLOW_KEY>
+VISUAL_ENDPOINT=<YOUR_PROMPTFLOW_VISUAL_ENDPOINT>
+VISUAL_KEY=<YOUR_PROMPTFLOW_VISUAL_KEY>
+```
 
-## Demo
+If you follow the [Contoso Chat](https://github.com/Azure-Samples/contoso-chat/) repo, you will have all of these endpoints set up already. If you want to use the Visual Chat feature, you will need to wait until GPT-4 Turbo with Vision is released.
 
-A demo app is included to show how to use the project.
+## Additional Features
+As part of this site we have added debug statements to the console to see the responses. For the grounded chat, you will see the following:
 
-To run the demo, follow these steps:
+![Grounded Chat Debug](images/grounded.png "Grounded Chat Debug")
 
-(Add steps to start up the demo)
+For the standard prompt flow chat you will see the following:
 
-1.
-2.
-3.
+![Prompt Flow Chat Debug](images/promptflow.png "Prompt Flow Chat Debug")
 
-## Resources
+This is useful for debugging purposes and shows you what is being sent to the individual endpoints.
 
-(Any additional resources or related projects)
+## Things to do
+Couple of things I would like to do with this repo:
 
-- Link to supporting information
-- Link to similar sample
-- ...
+1. Change to streaming chat output instead of waiting for the entire response to come back.
+2. Any other ideas? Let me know!
