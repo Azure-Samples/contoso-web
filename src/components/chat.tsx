@@ -12,7 +12,11 @@ import Turn from "./turn";
 import { ChatTurn, ChatType } from "@/lib/types";
 import { useSearchParams } from "next/navigation";
 import Video from "./video";
-import { sendGroundedMessage, sendPromptFlowMessage, sendVisualMessage } from "@/lib/messaging";
+import {
+  sendGroundedMessage,
+  sendPromptFlowMessage,
+  sendVisualMessage,
+} from "@/lib/messaging";
 
 interface ChatAction {
   type: "add" | "clear" | "replace";
@@ -103,8 +107,15 @@ export const Chat = () => {
           setShowVideo(true);
         })
         .catch((err) => {
-          // send message
-          alert("Please allow camera access to use this feature.");
+          console.log(err);
+          if (
+            err.name == "NotAllowedError" ||
+            err.name == "PermissionDeniedError"
+          ) {
+            alert("Please allow camera access to use this feature.");
+          } else {
+            setShowVideo(true);
+          }
         });
     } else {
       activateFileInput();
