@@ -19,7 +19,7 @@ import {
 } from "@/lib/messaging";
 
 interface ChatAction {
-  type: "add" | "clear" | "replace";
+  type: "add" | "clear" | "replace" | "load";
   payload?: ChatTurn;
 }
 
@@ -29,16 +29,33 @@ interface ChatState {
 
 function chatReducer(state: ChatState, action: ChatAction) {
   switch (action.type) {
-    case "add":
-      return { turns: [...state.turns, action.payload!] };
-    case "clear":
+    case "add": {
+      const turns = [...state.turns, action.payload!];
+      //localStorage.setItem("chat", JSON.stringify(turns));
+      return { turns: turns };
+    }
+    case "clear": {
+      //localStorage.removeItem("chat");
       return { turns: [] };
-    case "replace":
+    }
+    case "replace": {
+      const turns = [...state.turns.slice(0, -1), action.payload!];
+      //localStorage.setItem("chat", JSON.stringify(turns));
       return {
-        turns: [...state.turns.slice(0, -1), action.payload!],
+        turns: turns,
       };
-    default:
+    }
+    case "load": {
+      const turns = localStorage.getItem("chat");
+      if (turns) {
+        return { turns: JSON.parse(turns) };
+      } else {
+        return { turns: [] };
+      }
+    }
+    default: {
       throw new Error();
+    }
   }
 }
 
@@ -244,6 +261,23 @@ export const Chat = () => {
     setShowVideo(false);
   };
 
+  useEffect(() => {
+    dispatch({ type: "load"});
+    
+    setTimeout(() => {
+      console.log(state.turns.length);
+      if(state.turns.length > 0) {
+        setShowChat(true);
+        scrollChat();
+      }
+    }, 1000);
+  }, []);
+
+// set alert if cookies are disabled
+
+
+
+
   return (
     <>
       <div className="fixed bottom-0 right-0 mr-12 mb-12 z-10 flex flex-col items-end ">
@@ -258,7 +292,7 @@ export const Chat = () => {
               ref={chatDiv}
             >
               <div className="flex flex-col gap-4">
-                {state.turns.map((turn, i) => (
+                {state.turns.map((turn: ChatTurn, i: number) => (
                   <Turn key={i} turn={turn} type={chatType} />
                 ))}
               </div>
