@@ -27,7 +27,7 @@ export default async function RootLayout({
               outerClassName="bg-zinc-800"
               innerClassName="text-zinc-100 text-right text-xs p-2"
             >
-              &copy;Micosoft 2023
+              &copy;Microsoft 2024
             </Block>
           </main>
           <Chat />
